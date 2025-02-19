@@ -1,7 +1,14 @@
 
 import { Application } from "jsr:@oak/oak";
 import { parseArgs } from "jsr:@std/cli/parse-args";
-const parse_path = (str?: string | undefined) => str !== undefined ? Number(str) : 9999;
+const parse_port = (str?: string | undefined) => str !== undefined ? Number(str) : 9999;
+
+function parse_path(srt?: string | undefined): string {
+  if(srt === undefined) {
+    return Deno.cwd()
+  }
+  return srt
+}
 async function read_dir(path: string, port: number) {
   for await (const file of Deno.readDir(path)) {
     if (file.name === "index.html") {
@@ -29,10 +36,10 @@ async function init_server(): Promise<null | boolean> {
   const { path, port } = parseArgs(Deno.args, {
     string: ["path", "port"],
   });
-  if (!path) return null;
-  const parsed_port = parse_path(port);
-  serve_dir(path, parsed_port);
-  await read_dir(path, parsed_port);
+  const parsed_path = parse_path(path);
+  const parsed_port = parse_port(port);
+  serve_dir(parsed_path, parsed_port);
+  await read_dir(parsed_path, parsed_port);
   console.clear();
   console.log(`Folder served at http://localhost:${parsed_port}`)
   return true;
