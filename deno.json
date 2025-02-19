@@ -1,0 +1,11 @@
+{
+  "tasks": {
+    "dev": "deno run --watch main.ts",
+    "start": "deno run --allow-read --allow-net --allow-run main.ts",
+    "compile": "deno compile --allow-read --allow-net --allow-run --target aarch64-apple-darwin  main.ts"
+  },
+  "imports": {
+    "@oak/oak": "jsr:@oak/oak@^17.1.4",
+    "@std/assert": "jsr:@std/assert@1"
+  }
+}
