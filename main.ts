@@ -18,6 +18,8 @@ async function read_dir(path: string, port: number) {
           ? new Deno.Command("open", { args: [`http://localhost:${port}/index.html`] })
           : new Deno.Command("xdg-open", { args: [`http://localhost:${port}/index.html`] });
       await command.spawn();
+    } else {
+      console.log(`    - ${file.name}`)
     }
   }
 }
@@ -39,8 +41,9 @@ async function init_server(): Promise<null | boolean> {
   const parsed_path = parse_path(path);
   const parsed_port = parse_port(port);
   serve_dir(parsed_path, parsed_port);
-  await read_dir(parsed_path, parsed_port);
   console.clear();
+  console.log('Files on folder:')
+  await read_dir(parsed_path, parsed_port);
   console.log(`Folder served at http://localhost:${parsed_port}`)
   return true;
 };
