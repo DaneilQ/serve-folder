@@ -1,7 +1,7 @@
 export default class CommandFactory {
   public command: Deno.Command;
   constructor(os_name: string, port: number) {
-    const url = `http://localhost:${port}/index.html`;
+    const url = `http://localhost:${port}/`;
     const args_arr = [url];
     let command_name = "";
     switch (os_name) {

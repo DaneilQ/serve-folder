@@ -1,50 +1,29 @@
-import { Application, Router } from "@oak/oak";
+import { Application, Context } from "@oak/oak";
+import { Route, RouteFactory } from "./route.ts";
 
 export default class Serve {
+  static regex = new RegExp(/\/+/g);
   static dir(
     path: string,
     endpoints: { [key: string]: Array<string> },
     port: number,
   ) {
     const app = new Application();
-    const router = new Router();
+    const r = new Route();
     const entries = Object.entries(endpoints);
-    const decoder = new TextDecoder("utf-8");
-    for (let i = 0; i < entries.length; i++) {
+    let i = 0;
+    while (i < entries.length) {
       const [inner_path, routes] = entries[i];
-      for (let route of routes) {
-        const full_name = `${path}${inner_path}${
-          route.replace(/\/+/g, "")
-        }.html`;
-        if (route === "(.*)") {
-          route = "404";
-        } else if (route === "index") {
-          route = "";
-        }
-        let altered__inner_path = inner_path;
-        if (route === "") {
-          const splitted = inner_path.split("/");
-          altered__inner_path = splitted.slice(0, splitted.length - 1).join(
-            "/",
-          );
-        }
-        router.get(`${altered__inner_path}${route}`, async (ctx) => {
-          try {
-            const file = await Deno.readFile(
-              full_name,
-            );
-            const text = decoder.decode(file);
-            ctx.response.body = text;
-            ctx.response.type = "text/html";
-            ctx.response.status = 200;
-          } catch (err) {
-            console.log("error loading file");
-            console.log(err);
-          }
-        });
+      let j = 0;
+      while (j < routes.length) {
+        const route = routes[j];
+        const route_data = new RouteFactory(route, path, inner_path, port);
+        r.append_to(route_data.route_name, route_data.full_name);
+        j++;
       }
+      i++;
     }
-    app.use(router.routes());
+    app.use(r.get().routes());
     app.use(async (context, next) => {
       try {
         await context.send({ root: path });
@@ -53,5 +32,19 @@ export default class Serve {
       }
     });
     app.listen({ port });
+  }
+
+  static async html(ctx: Context, full_name: string) {
+    try {
+      const decoder = new TextDecoder("utf-8");
+      const file = await Deno.readFile(full_name);
+      const text = decoder.decode(file);
+      ctx.response.body = text;
+      ctx.response.type = "text/html";
+      ctx.response.status = 200;
+    } catch (err) {
+      console.log("error loading file");
+      console.log(err);
+    }
   }
 }
