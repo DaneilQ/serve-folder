@@ -11,18 +11,15 @@ export default class Serve {
     const app = new Application();
     const r = new Route();
     const entries = Object.entries(endpoints);
-    let i = 0;
-    while (i < entries.length) {
-      const [inner_path, routes] = entries[i];
-      let j = 0;
-      while (j < routes.length) {
-        const route = routes[j];
+
+    this.loop(entries, (item) => {
+      const [inner_path, routes] = item;
+      this.loop(routes, (route) => {
         const route_data = new RouteFactory(route, path, inner_path, port);
         r.append_to(route_data.route_name, route_data.full_name);
-        j++;
-      }
-      i++;
-    }
+      });
+    });
+
     app.use(r.get().routes());
     app.use(async (context, next) => {
       try {
@@ -32,6 +29,14 @@ export default class Serve {
       }
     });
     app.listen({ port });
+  }
+
+  static loop<T>(arr: T[], func: (t: T) => void) {
+    let i = 0;
+    while (i < arr.length) {
+      func(arr[i]);
+      i++;
+    }
   }
 
   static async html(ctx: Context, full_name: string) {
