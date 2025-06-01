@@ -2,7 +2,7 @@
   "tasks": {
     "dev": "deno run --watch src/main.ts",
     "start": "deno run --allow-read --allow-net --allow-run src/main.ts",
-    "compile": "deno compile --allow-read --allow-net --allow-run --output bin/main --target aarch64-apple-darwin src/main.ts"
+    "compile": "deno compile --allow-read --allow-net --allow-run --output bin/serve --target aarch64-apple-darwin src/main.ts"
   },
   "imports": {
     "@oak/oak": "jsr:@oak/oak@^17.1.4",
