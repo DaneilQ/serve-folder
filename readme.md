@@ -1,6 +1,6 @@
 # Folder Serve Application
 
-This project is a lightweight static file server built using Deno. It allows you to serve a directory of HTML files over HTTP, making it easy to preview or share static websites locally. The application automatically maps HTML files in the directory to routes and provides a simple way to navigate through them.
+This project is a static file server built using Deno. It allows you to serve a directory of HTML files over HTTP, making it easy to preview or share static websites locally. The application automatically maps HTML files in the directory to routes and provides a simple way to navigate through them.
 
 ## Features
 
