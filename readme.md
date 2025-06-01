@@ -46,9 +46,9 @@ This project is a lightweight static file server built using Deno. It allows you
   deno install
   ```
 
-4. Compile the application for your target platform. This step creates a standalone executable binary that can run on your operating system. Use the following command, replacing `<your target platform>` with the desired platform (e.g., `windows`, `linux`, or `mac`):
+4. Compile the application for your target platform. This step creates a standalone executable binary that can run on your operating system. Use the following command, replacing `<your target platform>` with the desired platform (e.g., `windows-x64`, `linux-x64`, or `mac-arc`):
     ```bash
-    deno task compile <your target platform>
+    deno task compile-<your target platform>
     ```
 
 5. Once the binary is compiled, add it to your system's PATH environment variable. This allows you to run the `serve` command from any directory without needing to specify its full path. Refer to your operating system's documentation for instructions on how to add a binary to PATH.
