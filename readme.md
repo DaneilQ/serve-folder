@@ -33,7 +33,6 @@ This project is a lightweight static file server built using Deno. It allows you
    - The application accepts two optional arguments:
      - `--path`: The directory to serve (defaults to the current working directory).
      - `--port`: The port to serve the files on (defaults to `9999`).
-6. **Make it avaiable
 
 ## Installation
 
